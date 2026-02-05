@@ -2254,6 +2254,14 @@ section {
   color: var(--text-muted);
 }
 
+/* 다크 모드: 스타일 카드(미니멀, 캐주얼 등) 텍스트 가독성 */
+[data-theme="dark"] .style-card .style-info h4 {
+  color: var(--text-primary);
+}
+[data-theme="dark"] .style-card .style-info p {
+  color: var(--text-secondary);
+}
+
 .style-check {
   position: absolute;
   top: 12px;
