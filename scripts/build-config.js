@@ -36,8 +36,9 @@ if (fs.existsSync(envPath)) {
   console.warn('.env 파일이 없습니다. .env.example 을 복사하여 .env 를 만들고 API 키를 입력하세요.');
 }
 
-const openaiKey = env.OPENAI_API_KEY || '';
-const geminiKey = env.GEMINI_API_KEY || '';
+// 배포(Cloudflare Pages 등)에서는 process.env 로 키 주입. 로컬은 .env 우선.
+const openaiKey = process.env.OPENAI_API_KEY || env.OPENAI_API_KEY || '';
+const geminiKey = process.env.GEMINI_API_KEY || env.GEMINI_API_KEY || '';
 
 const configContent = `// SIMS Fashion AI - API 설정 (자동 생성, Git 제외)
 // scripts/build-config.js 로 .env 에서 생성됩니다.

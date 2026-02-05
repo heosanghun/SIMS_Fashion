@@ -1831,7 +1831,7 @@
         parts: [{ text: msg.content }]
       });
     }
-    var geminiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+    var geminiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
     var systemText = SYSTEM_PROMPT_BASE + getChatUserContext();
     const res = await fetch(geminiUrl + '?key=' + encodeURIComponent(GEMINI_API_KEY), {
       method: 'POST',
