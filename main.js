@@ -1602,26 +1602,44 @@
                         result.personalColor.season.includes('여름') ? 'summer' :
                         result.personalColor.season.includes('가을') ? 'autumn' : 'winter';
 
+    var primaryKey = getPrimary7Color(result.personalColor.season);
+    var music = COLOR_MUSIC[primaryKey] || COLOR_MUSIC.blue;
+
     const personalColorEl = document.getElementById('personal-color-result');
     if (personalColorEl) {
-      var primaryKey = getPrimary7Color(result.personalColor.season);
-      var music = COLOR_MUSIC[primaryKey] || COLOR_MUSIC.blue;
       personalColorEl.innerHTML = `
         <div class="color-type">
           <span class="color-season ${seasonClass}">${result.personalColor.season}</span>
         </div>
-        <p style="color: var(--text-secondary); font-size: 0.9rem; margin: 8px 0;">${result.personalColor.description}</p>
+        <p class="personal-color-desc">${result.personalColor.description}</p>
         <div class="recommended-palette">
           ${result.personalColor.palette.map(color => `
             <div class="palette-color" style="background: ${color}" title="${color}"></div>
           `).join('')}
         </div>
-        <div class="personal-color-music">
-          <h5 class="personal-color-music-title">이 컬러에 어울리는 무드 & 음악</h5>
-          <p class="personal-color-music-desc">당신은 <strong>${music.name}</strong> 계열이에요. ${music.description}</p>
-          <div class="personal-color-music-actions">
-            <a href="${music.directLink}" target="_blank" rel="noopener noreferrer" class="music-cta">이 무드의 대표 곡 들어보기</a>
-            <a href="${music.searchLink}" target="_blank" rel="noopener noreferrer" class="music-cta music-cta-secondary">유튜브에서 더 찾아보기</a>
+      `;
+    }
+
+    const moodMusicEl = document.getElementById('mood-music-result');
+    if (moodMusicEl) {
+      moodMusicEl.style.display = 'block';
+      moodMusicEl.innerHTML = `
+        <div class="mood-music-zone">
+          <div class="mood-music-rainbow"></div>
+          <span class="mood-music-badge">SPECIAL</span>
+          <h3 class="mood-music-headline">나만의 무드 & 음악</h3>
+          <p class="mood-music-tagline">당신만을 위한 특별한 공간</p>
+          <div class="mood-music-color-pill">${music.name} 계열</div>
+          <p class="mood-music-desc">${music.description}</p>
+          <div class="mood-music-actions">
+            <a href="${music.directLink}" target="_blank" rel="noopener noreferrer" class="mood-music-btn mood-music-btn-primary">
+              <span class="mood-music-btn-icon">♪</span>
+              이 무드의 대표 곡 들어보기
+            </a>
+            <a href="${music.searchLink}" target="_blank" rel="noopener noreferrer" class="mood-music-btn mood-music-btn-secondary">
+              <span class="mood-music-btn-icon">▶</span>
+              유튜브에서 더 찾아보기
+            </a>
           </div>
         </div>
       `;

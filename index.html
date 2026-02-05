@@ -50,13 +50,15 @@
     </div>
     <div class="hero-content">
       <div class="hero-badge">AI-Powered Fashion</div>
+      <p class="hero-tagline">나만의 컬러 × 나만의 무드 · 특별한 만남</p>
       <h1 class="hero-title">
         <span class="title-line">당신만을 위한</span>
-        <span class="title-highlight">초개인화 스타일링</span>
+        <span class="title-highlight">특별한 체험</span>
       </h1>
       <p class="hero-description">
-        AI가 당신의 체형, 피부톤, 라이프스타일을 분석하여<br>
-        세상에 단 하나뿐인 퍼스널 스타일을 제안합니다
+        퍼스널 컬러와 어울리는 무드·음악까지 한곳에서.<br>
+        AI가 당신의 체형, 피부톤, 라이프스타일을 분석해<br>
+        <strong>세상에 단 하나뿐인</strong> 스타일과 특별한 경험을 제안합니다
       </p>
       <div class="hero-cta">
         <button class="btn-primary btn-large">
@@ -89,15 +91,18 @@
     </div>
     <div class="hero-visual">
       <div class="phone-mockup">
+        <div class="phone-mockup-glow" aria-hidden="true"></div>
         <div class="phone-screen">
           <div class="app-header">
-            <span>My Style Profile</span>
+            <span class="app-header-title">나만의 컬러 & 무드</span>
+            <span class="app-header-sub">특별한 나를 만나는 순간</span>
           </div>
           <div class="style-card">
             <div class="style-image"></div>
             <div class="style-info">
               <span class="style-match">95% Match</span>
               <span class="style-name">Minimal Chic</span>
+              <span class="style-mood">나의 무드 · 청량한</span>
             </div>
           </div>
           <div class="style-card">
@@ -105,11 +110,21 @@
             <div class="style-info">
               <span class="style-match">92% Match</span>
               <span class="style-name">Street Casual</span>
+              <span class="style-mood">나의 무드 · 밝은 에너지</span>
             </div>
+          </div>
+          <div class="hero-color-dots" aria-hidden="true">
+            <span class="dot" style="--c:#ef4444"></span>
+            <span class="dot" style="--c:#f97316"></span>
+            <span class="dot" style="--c:#eab308"></span>
+            <span class="dot" style="--c:#22c55e"></span>
+            <span class="dot" style="--c:#3b82f6"></span>
+            <span class="dot" style="--c:#6366f1"></span>
+            <span class="dot" style="--c:#a855f7"></span>
           </div>
           <div class="ai-suggestion">
             <div class="ai-icon">AI</div>
-            <span>오늘의 추천 스타일이 준비되었습니다!</span>
+            <span>나만의 컬러와 만나는 <strong>특별한 체험</strong>, 지금 시작하세요</span>
           </div>
         </div>
       </div>
@@ -987,7 +1002,7 @@
                 <h4>퍼스널 컬러</h4>
               </div>
               <div id="personal-color-result" class="personal-color-content">
-                <!-- AI result will be inserted here -->
+                <!-- AI result: 시즌, 설명, 팔레트만 -->
               </div>
             </div>
 
@@ -999,6 +1014,10 @@
               <div id="style-result" class="style-content">
                 <!-- AI result will be inserted here -->
               </div>
+            </div>
+
+            <div id="mood-music-result" class="mood-music-row" aria-label="나만의 무드 & 음악">
+              <!-- JS: 무드·음악 블록 삽입 (전체 너비 행) -->
             </div>
 
             <div class="result-card recommendation-card">
