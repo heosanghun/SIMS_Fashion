@@ -1,0 +1,8 @@
+{
+  "name": "sims-fashion-ai",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build-config.js"
+  },
+  "description": "SIMS Fashion AI - 배포 시 config.js 생성용 (Cloudflare Pages Build command: npm run build)"
+}

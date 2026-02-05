@@ -64,10 +64,11 @@ GitHub Actions 오류만 없애려면 위 **Settings → Pages → Source: GitHu
    - **Encrypt** 체크 후 저장
 3. **Settings** 탭 → **Builds & deployments** → **Build configuration**
    - **Build command**:  
-     `node scripts/build-config.js`
+     `npm run build` (또는 `node scripts/build-config.js`)
    - **Build output directory**:  
-     `.` (또는 비워 두고 기본값 사용하는 경우, 정적 사이트면 보통 프로젝트 루트가 배포됨. Cloudflare가 루트를 배포한다면 비워 둬도 됨)
+     반드시 **`.`** 또는 **`/`** 로 설정 (루트 전체를 배포해야 생성된 `config.js`가 포함됨). 비워 두면 일부 환경에서 빌드 결과물이 비어 있을 수 있음.
 4. **Save** 후 **Retry deployment** 또는 새로 푸시해서 다시 배포
+5. **확인**: 배포 완료 후 https://sims-fashion.pages.dev 에서 챗봇에 메시지를 보내 보세요. 여전히 "API 키가 설정되지 않았습니다"가 나오면, **Environment variables**에 `GEMINI_API_KEY`가 **Production**에 저장되어 있는지, **Retry deployment**를 한 번 더 실행했는지 확인하세요.
 
 ### 2. 동작 방식
 
