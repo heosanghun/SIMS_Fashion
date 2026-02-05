@@ -1724,6 +1724,30 @@
   let chatHistory = [];
   let isTyping = false;
 
+  // Gemini 2.5 Flash 무료 티어: 10 RPM, 250 RPD (일일 요청 수). 한도 초과 시 자동 차단.
+  var CHAT_DAILY_LIMIT = 250;
+  var CHAT_QUOTA_KEY = 'sims_chat_quota';
+
+  function getChatQuota() {
+    try {
+      var raw = localStorage.getItem(CHAT_QUOTA_KEY);
+      if (!raw) return { count: 0 };
+      var obj = JSON.parse(raw);
+      var today = new Date().toDateString();
+      if (obj.date !== today) return { count: 0 };
+      return { count: Number(obj.count) || 0 };
+    } catch (e) { return { count: 0 }; }
+  }
+
+  function setChatQuota(count) {
+    try {
+      localStorage.setItem(CHAT_QUOTA_KEY, JSON.stringify({
+        date: new Date().toDateString(),
+        count: count
+      }));
+    } catch (e) {}
+  }
+
   const chatWidget = document.getElementById('chat-widget');
   const chatToggle = document.getElementById('chat-toggle');
   const chatMessages = document.getElementById('chat-messages');
@@ -1776,6 +1800,7 @@
 
   if (chatSend) {
     chatSend.addEventListener('click', sendMessage);
+    if (getChatQuota().count >= CHAT_DAILY_LIMIT) chatSend.disabled = true;
   }
 
   async function sendMessage() {
@@ -1802,6 +1827,15 @@
       return;
     }
 
+    var quota = getChatQuota();
+    if (quota.count >= CHAT_DAILY_LIMIT) {
+      addMessage('assistant', '오늘의 채팅 한도(' + CHAT_DAILY_LIMIT + '회)에 도달했습니다. 내일 다시 이용해 주세요. ☀️');
+      if (chatSend) chatSend.disabled = true;
+      return;
+    }
+
+    setChatQuota(quota.count + 1);
+
     showTypingIndicator();
     isTyping = true;
     if (chatSend) chatSend.disabled = true;
@@ -1814,13 +1848,20 @@
     } catch (error) {
       hideTypingIndicator();
       var errMsg = (error && error.message) ? error.message : String(error);
-      if (errMsg.length > 200) errMsg = errMsg.slice(0, 200) + '…';
-      addMessage('assistant', '죄송합니다. 오류가 발생했습니다. 🙏<br><br><small>원인: ' + escapeHtml(errMsg) + '</small>');
+      var isQuotaError = errMsg === 'QUOTA_LIMIT' || /429|RESOURCE_EXHAUSTED|quota|rate limit/i.test(errMsg);
+      if (isQuotaError) {
+        setChatQuota(CHAT_DAILY_LIMIT);
+        addMessage('assistant', '오늘의 채팅 한도(' + CHAT_DAILY_LIMIT + '회)에 도달했습니다. 내일 다시 이용해 주세요. ☀️');
+        if (chatSend) chatSend.disabled = true;
+      } else {
+        if (errMsg.length > 200) errMsg = errMsg.slice(0, 200) + '…';
+        addMessage('assistant', '죄송합니다. 오류가 발생했습니다. 🙏<br><br><small>원인: ' + escapeHtml(errMsg) + '</small>');
+      }
       console.error('Chat API Error:', error);
     }
 
     isTyping = false;
-    if (chatSend) chatSend.disabled = false;
+    if (chatSend && getChatQuota().count < CHAT_DAILY_LIMIT) chatSend.disabled = false;
   }
 
   async function callGeminiChat(userMessage) {
@@ -1831,7 +1872,7 @@
         parts: [{ text: msg.content }]
       });
     }
-    var geminiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
+    var geminiUrl = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
     var systemText = SYSTEM_PROMPT_BASE + getChatUserContext();
     const res = await fetch(geminiUrl + '?key=' + encodeURIComponent(GEMINI_API_KEY), {
       method: 'POST',
@@ -1845,6 +1886,9 @@
     const data = await res.json().catch(function() { return {}; });
     if (!res.ok) {
       var errMsg = (data.error && data.error.message) ? data.error.message : ('HTTP ' + res.status);
+      if (res.status === 429 || (data.error && (data.error.code === 429 || data.error.status === 'RESOURCE_EXHAUSTED'))) {
+        throw new Error('QUOTA_LIMIT');
+      }
       throw new Error('Gemini: ' + errMsg);
     }
     var text = data.candidates && data.candidates[0] && data.candidates[0].content && data.candidates[0].content.parts && data.candidates[0].content.parts[0] && data.candidates[0].content.parts[0].text;

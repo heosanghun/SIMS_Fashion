@@ -47,7 +47,7 @@ GitHub Actions 오류만 없애려면 위 **Settings → Pages → Source: GitHu
 
 ---
 
-## ✅ 챗봇(Gemini 1.5 Flash) 활성화 – Cloudflare Pages
+## ✅ 챗봇(Gemini 2.5 Flash) 활성화 – Cloudflare Pages
 
 **왜 배포 사이트에서만 "API 키가 설정되지 않았습니다"가 뜨나요?**  
 `config.js`는 API 키를 담고 있어서 **Git에 올리지 않습니다**(.gitignore). 그래서 Cloudflare가 GitHub에서 가져온 코드에는 `config.js`가 없고, 챗봇이 동작하지 않습니다.
@@ -78,4 +78,4 @@ GitHub Actions 오류만 없애려면 위 **Settings → Pages → Source: GitHu
 ### 3. 참고
 
 - API 키는 Cloudflare 환경 변수에만 넣고, GitHub에는 올리지 마세요.
-- 챗봇 모델은 **Gemini 1.5 Flash**로 설정되어 있습니다 (`main.js`).
+- 챗봇 모델은 **Gemini 2.5 Flash**로 설정되어 있습니다 (`main.js`).
